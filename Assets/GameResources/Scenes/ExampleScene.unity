@@ -253,8 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb66599cb2801a43b8d7dfc7c55cec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
   heroCamera: {fileID: 963194227}
+  movementSpeed: 7
 --- !u!114 &32632240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6540d6778b1cc174d9b8b6b988ca593d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceDash: 10
   heroCamera: {fileID: 963194227}
+  distanceDash: 15
 --- !u!1 &34045338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3148,6 +3148,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b83f5156d674643972c6258ba59ace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1066050736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066050732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a649f8854c7d84287b48a8c7bea8e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabParticleDash: {fileID: 3821073666317211921, guid: 6c700eab1fd9d8d4d9b3865fcdb61d0d, type: 3}
 --- !u!1001 &1071293055
 PrefabInstance:
   m_ObjectHideFlags: 0
