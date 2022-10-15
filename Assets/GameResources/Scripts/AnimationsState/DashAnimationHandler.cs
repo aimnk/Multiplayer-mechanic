@@ -12,6 +12,7 @@ namespace GameResources.Scripts.Input.AnimationsState
         private const string DASH_KEY = "isDash";
 
         private Animator animator;
+        
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -19,6 +20,11 @@ namespace GameResources.Scripts.Input.AnimationsState
         }
 
         private void OnDestroy() => Game.InputService.onDashDown -= OnDashDown;
-        private void OnDashDown() => animator.SetBool(DASH_KEY, true);
+
+        private void OnDashDown()
+        {
+            if (Game.InputService.MoveDirection.sqrMagnitude > Mathf.Epsilon)
+                animator.SetBool(DASH_KEY, true);
+        }
     }
 }
