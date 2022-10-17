@@ -1,7 +1,7 @@
-using GameResources.Scripts.Base;
+using GameResources.Scripts.Networking;
 using UnityEngine;
 
-namespace GameResources.Scripts.Input.AnimationsState
+namespace GameResources.Scripts.AnimationsState
 {
     /// <summary>
     /// Обработчик включения анимации при использование способности рывка
@@ -12,18 +12,29 @@ namespace GameResources.Scripts.Input.AnimationsState
         private const string DASH_KEY = "isDash";
 
         private Animator animator;
+
+        private PlayerEntity playerEntity;
         
-        private void Awake()
+        private void Start()
         {
             animator = GetComponent<Animator>();
-            Game.InputService.onDashDown += OnDashDown;
+            playerEntity = GetComponentInParent<PlayerEntity>();
+            
+            if (playerEntity.InputService == null)
+                return;
+            
+            playerEntity.InputService.onDashDown += OnDashDown;
         }
 
-        private void OnDestroy() => Game.InputService.onDashDown -= OnDashDown;
+        private void OnDestroy()
+        {
+            if (playerEntity.InputService != null)
+                playerEntity.InputService.onDashDown -= OnDashDown;
+        }
 
         private void OnDashDown()
         {
-            if (Game.InputService.MoveDirection.sqrMagnitude > Mathf.Epsilon)
+            if (playerEntity.InputService.MoveDirection.sqrMagnitude > Mathf.Epsilon)
                 animator.SetBool(DASH_KEY, true);
         }
     }

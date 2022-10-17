@@ -18,13 +18,20 @@ namespace GameResources.Scripts.Input.Actions
 
       protected override void Action()
       {
-         if ((InputService.MoveDirection.sqrMagnitude < Mathf.Epsilon))
+         if (PlayerEntity.InputService == null)
+         {
+            enabled = false;
+            return;;
+         }
+         
+         if ((PlayerEntity.InputService.MoveDirection.sqrMagnitude < Mathf.Epsilon))
             return;
 
-         var movementVector = heroCamera.transform.TransformDirection(InputService.MoveDirection);
+         var movementVector = heroCamera.transform.TransformDirection(PlayerEntity.InputService.MoveDirection);
          movementVector.y = 0;
          movementVector.Normalize();
-
+         movementVector += Physics.gravity;
+         
          CharacterController.Move(movementVector * (movementSpeed * Time.deltaTime));
       }
 

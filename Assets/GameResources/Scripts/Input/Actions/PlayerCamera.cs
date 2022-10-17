@@ -21,7 +21,13 @@ namespace GameResources.Scripts.Input.Actions
         
         protected override void Action()
         {
-            rotate.x += InputService.LookDirection.x;
+            if (PlayerEntity.InputService == null)
+            {
+                enabled = false;
+                return;;
+            }
+            
+            rotate.x += PlayerEntity.InputService.LookDirection.x;
             euler.y = CharacterController.transform.rotation.y + rotate.x;
             angleRotation.eulerAngles = euler;
             CharacterController.transform.rotation = angleRotation;
