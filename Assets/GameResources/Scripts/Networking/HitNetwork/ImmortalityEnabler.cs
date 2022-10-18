@@ -1,5 +1,5 @@
 using System.Collections;
-using GameResources.Scripts.Networking;
+using GameResources.Scripts.Networking.Base;
 using Mirror;
 using UnityEngine;
 
@@ -15,35 +15,37 @@ public class ImmortalityEnabler : NetworkBehaviour
     private PlayerEntity playerEntity;
 
     [SerializeField]
-    private int delayImortality = 3;
+    private int delayImmortality = 3;
     
-    private Coroutine coroutineImortality;
+    private Coroutine coroutineImmortality;
     
     /// <summary>
     /// Установить неуязвимость у игрока
     /// </summary>
-    public void SetImortality()
+    public void SetImmortality()
     {
         immortalityView.SetOutline(true);
         
-        if (playerEntity.isImortality && coroutineImortality == null)
+        if (playerEntity.isImortality && coroutineImmortality == null)
         {
-            coroutineImortality = StartCoroutine(DelayImortality());
+            Debug.Log("Start coroutine");
+            coroutineImmortality = StartCoroutine(DelayImmortality());
         }
     }
     
-    private IEnumerator DelayImortality()
+    private IEnumerator DelayImmortality()
     {
-        yield return new WaitForSeconds(delayImortality);
-        CmdDisableImortality();
-        coroutineImortality = null;
+        yield return new WaitForSeconds(delayImmortality);
+        
+        CmdDisableImmortality();
+        coroutineImmortality = null;
     }
     
     [Command]
-    private void CmdDisableImortality() => DisableImortality();
+    private void CmdDisableImmortality() => DisableImmortality();
     
     [ClientRpc]
-    private void DisableImortality()
+    private void DisableImmortality()
     {
         if (playerEntity.IsImortality)
         {
@@ -51,4 +53,6 @@ public class ImmortalityEnabler : NetworkBehaviour
             playerEntity.SetImortality(false);
         }
     }
+
+    private void OnDisable() => coroutineImmortality = null;
 }

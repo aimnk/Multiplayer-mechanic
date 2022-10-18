@@ -1,5 +1,6 @@
+using System;
 using GameResources.Scripts.Input.Actions;
-using GameResources.Scripts.Networking;
+using GameResources.Scripts.Networking.Base;
 using Mirror;
 using UnityEngine;
 
@@ -8,7 +9,12 @@ using UnityEngine;
 /// </summary>
 public class HitHandler : NetworkBehaviour
 {
-    [SerializeField] 
+    /// <summary>
+    /// Событие - игрок нанес урон
+    /// </summary>
+    public event Action<PlayerEntity> onHit = delegate { };
+    
+     [SerializeField] 
     private DashAbility dashAbility;
 
     private Coroutine delayImortality;
@@ -29,17 +35,28 @@ public class HitHandler : NetworkBehaviour
     private void CmdOnHit(PlayerEntity playerEntity) => HitToPlayer(playerEntity);
 
     [ClientRpc]
-    private void HitToPlayer(PlayerEntity playerEntity)
+    private void HitToPlayer(PlayerEntity otherPlayerEntity)
     {
-        playerEntity.DecreaseHealth();
-
-        if (playerEntity.TryGetComponent(out ImmortalityEnabler immortalityEnabler))
+        if (otherPlayerEntity.isImortality)
+            return;
+        
+        otherPlayerEntity.DecreaseHealth();
+        
+        if (otherPlayerEntity.TryGetComponent(out ImmortalityEnabler immortalityEnabler))
         {
-            immortalityEnabler.SetImortality();
+            immortalityEnabler.SetImmortality();
         }
         else
         {
             Debug.LogError("Не найден компонент " + nameof(ImmortalityEnabler));
         }
+        
+        if (gameObject.TryGetComponent(out PlayerEntity playerEntity))
+        {
+            OnHit(playerEntity);
+        }
     }
+    
+    private void OnHit(PlayerEntity playerEntity) => onHit.Invoke(playerEntity);
+
 }

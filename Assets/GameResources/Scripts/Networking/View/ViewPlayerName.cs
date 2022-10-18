@@ -1,19 +1,22 @@
-using GameResources.Scripts.Networking;
+using GameResources.Scripts.Networking.Base;
 using TMPro;
 using UnityEngine;
 
-/// <summary>
-/// Отображение имени игрока
-/// </summary>
-public class ViewPlayerName : MonoBehaviour
+namespace GameResources.Scripts.Networking.View
 {
-    [SerializeField] 
-    private PlayerEntity playerEntity;
+    /// <summary>
+    /// Отображение имени игрока
+    /// </summary>
+    public class ViewPlayerName : MonoBehaviour
+    {
+        [SerializeField] 
+        private PlayerEntity playerEntity;
     
-    [SerializeField] 
-    private TMP_Text textName;
+        [SerializeField] 
+        private TMP_Text textName;
 
-    private void Start() => ShowPlayerName();
+        private void Start() => ShowPlayerName();
     
-    public void ShowPlayerName() => textName.text = playerEntity.PlayerName;
+        public void ShowPlayerName() => textName.text = playerEntity.PlayerName;
+    }
 }
