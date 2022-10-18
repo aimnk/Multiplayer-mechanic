@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GameResources.Scripts.Networking;
+using GameResources.Scripts.Networking.Base;
 using Mirror.Examples.Chat;
 using UnityEngine;
 

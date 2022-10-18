@@ -10,12 +10,6 @@ namespace GameResources.Scripts.Input.Actions
       [SerializeField]
       private float movementSpeed = 10f;
       
-      protected override void Awake()
-      {
-         base.Awake();
-         Cursor.visible = false;
-      }
-
       protected override void Action()
       {
          if (PlayerEntity.InputService == null)

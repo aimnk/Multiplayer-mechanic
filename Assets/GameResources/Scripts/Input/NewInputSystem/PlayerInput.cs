@@ -167,6 +167,54 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""0df13a45-f48e-4c7a-9f1c-d2c9612dc656"",
+            ""actions"": [
+                {
+                    ""name"": ""EscapeButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""740c134a-537a-40fa-baf0-dc95179e8f8d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ClickMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""8088aa33-68a7-4569-b4f6-8ad3912cb64b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4675ef73-92da-49df-9d27-6b8fb3e9c8f2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""EscapeButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16e92f93-5871-4448-ba38-034af6c71682"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""ClickMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -204,6 +252,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_EscapeButton = m_UI.FindAction("EscapeButton", throwIfNotFound: true);
+        m_UI_ClickMouse = m_UI.FindAction("ClickMouse", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -308,6 +360,47 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_EscapeButton;
+    private readonly InputAction m_UI_ClickMouse;
+    public struct UIActions
+    {
+        private @PlayerInput m_Wrapper;
+        public UIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @EscapeButton => m_Wrapper.m_UI_EscapeButton;
+        public InputAction @ClickMouse => m_Wrapper.m_UI_ClickMouse;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @EscapeButton.started -= m_Wrapper.m_UIActionsCallbackInterface.OnEscapeButton;
+                @EscapeButton.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnEscapeButton;
+                @EscapeButton.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnEscapeButton;
+                @ClickMouse.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClickMouse;
+                @ClickMouse.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClickMouse;
+                @ClickMouse.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClickMouse;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @EscapeButton.started += instance.OnEscapeButton;
+                @EscapeButton.performed += instance.OnEscapeButton;
+                @EscapeButton.canceled += instance.OnEscapeButton;
+                @ClickMouse.started += instance.OnClickMouse;
+                @ClickMouse.performed += instance.OnClickMouse;
+                @ClickMouse.canceled += instance.OnClickMouse;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     private int m_MouseandKeyboardSchemeIndex = -1;
     public InputControlScheme MouseandKeyboardScheme
     {
@@ -331,5 +424,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnEscapeButton(InputAction.CallbackContext context);
+        void OnClickMouse(InputAction.CallbackContext context);
     }
 }
