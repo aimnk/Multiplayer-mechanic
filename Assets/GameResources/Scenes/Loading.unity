@@ -411,6 +411,7 @@ MonoBehaviour:
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
+  players: []
 --- !u!1 &879549910
 GameObject:
   m_ObjectHideFlags: 0

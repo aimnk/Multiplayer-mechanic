@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 791461414708479443}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 68296720901499565}
   - component: {fileID: 791461414852642062}
   - component: {fileID: 132389287734891035}
+  - component: {fileID: 7082552278745428647}
+  - component: {fileID: 5036237066168058077}
   - component: {fileID: 4976161022537922049}
   - component: {fileID: 791461414852642063}
   - component: {fileID: 791461414852642064}
@@ -95,8 +97,6 @@ GameObject:
   - component: {fileID: -3246754742105874969}
   - component: {fileID: 8266537997749492032}
   - component: {fileID: 8718397185316047496}
-  - component: {fileID: 7082552278745428647}
-  - component: {fileID: 5036237066168058077}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -173,6 +173,39 @@ MonoBehaviour:
   syncInterval: 0.1
   health: 0
   isImortality: 0
+  defaultCountHealth: 3
+--- !u!114 &7082552278745428647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791461414852642059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b13ec18f5ba3e34197f3b687c083d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  dashAbility: {fileID: 791461414852642065}
+--- !u!114 &5036237066168058077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791461414852642059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4677a7a57e5d64891e19d6b154c27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  immortalityView: {fileID: 6124939435500168538}
+  playerEntity: {fileID: 132389287734891035}
+  delayImortality: 3
 --- !u!114 &4976161022537922049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,38 +355,6 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 1
   animator: {fileID: 791461414685576206}
---- !u!114 &7082552278745428647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791461414852642059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b13ec18f5ba3e34197f3b687c083d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  dashAbility: {fileID: 791461414852642065}
-  immortalityEnabler: {fileID: 5036237066168058077}
---- !u!114 &5036237066168058077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791461414852642059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4677a7a57e5d64891e19d6b154c27d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  immortalityView: {fileID: 6124939435500168538}
-  playerEntity: {fileID: 132389287734891035}
 --- !u!1 &791461415359373324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,7 +1113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d5438d5aaf6e14a8b7876d8c79035b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerEntity: {fileID: 132389287734891035}
   meshRenderer: {fileID: 5121598290933302390}
   outlineMaterial: {fileID: 2100000, guid: 311313efa011949e98b6761d652ad13c, type: 2}
   valueOutline: 10
