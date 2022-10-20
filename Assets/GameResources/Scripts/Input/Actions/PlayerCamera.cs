@@ -7,18 +7,12 @@ namespace GameResources.Scripts.Input.Actions
     /// </summary>
     public class PlayerCamera : AbstractAction
     {
-        [SerializeField] 
-        private Transform lookAtTransform;
-            
-        [SerializeField] 
-        private float sensitivity = 10f;
-        
-        private Vector3 rotate;
+        private Vector3 moveDirection;
 
         private Quaternion angleRotation;
-
-        private Vector3 euler = Vector3.zero;
         
+        private float angle;
+
         protected override void Action()
         {
             if (PlayerEntity.InputService == null)
@@ -27,13 +21,9 @@ namespace GameResources.Scripts.Input.Actions
                 return;;
             }
             
-            rotate.x += PlayerEntity.InputService.LookDirection.x;
-            euler.y = CharacterController.transform.rotation.y + rotate.x;
-            angleRotation.eulerAngles = euler;
-            CharacterController.transform.rotation = angleRotation;
-            
-            heroCamera.transform.LookAt(lookAtTransform);
-            heroCamera.transform.Translate(Vector3.right * (rotate.y * Time.deltaTime * sensitivity));
+            moveDirection = PlayerEntity.InputService.MoveDirection.normalized;
+            angle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg + heroCamera.transform.eulerAngles.y;
+            CharacterController.transform.rotation = Quaternion.Euler(0f, angle, 0f);
         }
         
         private void Update() =>  Action();
