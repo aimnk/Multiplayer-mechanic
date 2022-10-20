@@ -28,6 +28,8 @@ namespace GameResources.Scripts.Input.Actions
 
         private bool alreadyHit = false;
         
+        private Vector3 moveDirection;
+        
         private void Start()
         {
             if (PlayerEntity.InputService == null)
@@ -76,18 +78,25 @@ namespace GameResources.Scripts.Input.Actions
                 yield return null;
 
             isDash = true;
-            var movementVector = heroCamera.transform.TransformDirection(PlayerEntity.InputService.MoveDirection);
-            movementVector.y = 0;
-            movementVector.Normalize();
+            moveDirection = heroCamera.transform.forward * PlayerEntity.InputService.MoveDirection.y +
+                           heroCamera.transform.right * PlayerEntity.InputService.MoveDirection.x;
+            
+            moveDirection.y = 0;
+            moveDirection.Normalize();
             
             for (float time = 0; time < DASH_TIME; time += TIME_DELAY)
             {
-                CharacterController.Move(movementVector * (distanceDash * time));
+                CharacterController.Move(moveDirection * (distanceDash * time));
                 yield return new WaitForSeconds(TIME_DELAY);
             }
 
             isDash = false;
             yield return null;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(CharacterController.transform.position, heroCamera.transform.TransformDirection(PlayerEntity.InputService.MoveDirection));
         }
     }
 }
