@@ -30,7 +30,6 @@ namespace GameResources.Scripts.Input.Actions
          
          moveDirection.Normalize();
          moveDirection += Physics.gravity;
-         
          CharacterController.Move(moveDirection * (movementSpeed * Time.deltaTime));
       }
 

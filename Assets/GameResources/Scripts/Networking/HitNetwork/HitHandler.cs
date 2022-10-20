@@ -14,7 +14,7 @@ public class HitHandler : NetworkBehaviour
     /// </summary>
     public event Action<PlayerEntity> onHit = delegate { };
     
-     [SerializeField] 
+    [SerializeField] 
     private DashAbility dashAbility;
 
     private Coroutine delayImortality;

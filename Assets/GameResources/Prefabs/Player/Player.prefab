@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 6431067626468030473}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -683,7 +683,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 1.07, z: 0}
 --- !u!114 &2311493096675877018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,8 +776,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heroCamera: {fileID: 3114679033120683858}
   cinemachineCamera: {fileID: 1979058601015145613}
-  lookAtTransform: {fileID: 3114679034224513676}
-  sensitivity: 10
 --- !u!114 &3114679033784907664
 MonoBehaviour:
   m_ObjectHideFlags: 0

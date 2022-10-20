@@ -1,30 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameResources.Scripts.Networking.Leaderbord;
 using GameResources.Scripts.Networking.View;
 using Mirror;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameResources.Scripts.Networking.Base
 {
     /// <summary>
     /// Спавнер игроков
     /// </summary>
-    /// TODO: необходимо переписать класс, нарушение SOLID
     public class PlayerSpawner : NetworkBehaviour
     {
+        /// <summary>
+        /// Событие - начало спавна игроков
+        /// </summary>
+        public event Action onStartSpawn = delegate { };
+        
         [SerializeField]
         private List<Transform> waypoints;
         
         [SerializeField] 
         private int delaySpawn = 5;
-
-        [SerializeField] 
-        private WinPlayerView winPlayerView;
         
-        [SerializeField] 
-        private DeathPlayerView deathPlayerView;
-
         [SerializeField] 
         private ViewRestartRound viewRestartRound;
 
@@ -43,6 +43,7 @@ namespace GameResources.Scripts.Networking.Base
         /// <summary>
         /// Запустить спавн игроков
         /// </summary>
+        [ServerCallback]
         public void StartSpawn()
         {
             if (delaySpawnCoroutine != null)
@@ -53,9 +54,13 @@ namespace GameResources.Scripts.Networking.Base
         
         private IEnumerator RespawnPlayers()
         {
+            if (isClient)
+                yield return null;
+            
             viewRestartRound.StartCountdown(delaySpawn);
             yield return new WaitForSeconds(delaySpawn);
 
+            onStartSpawn.Invoke();
             foreach (var player in networkManager.Players)
             {
                 SpawnPlayer(player);
@@ -68,14 +73,11 @@ namespace GameResources.Scripts.Networking.Base
             SpawnRandomWaypoint(player);
             SetPropertyPlayer(player);
             freeCamera.gameObject.SetActive(false);
-            winPlayerView.ShowWinnerWindow(false);
-            deathPlayerView.ShowWindowDeath(false);
             leaderBoardController.ResetStats();
         }
 
         private void SetPropertyPlayer(PlayerEntity player)
         {
-            player.gameObject.SetActive(true);
             player.isImortality = false;
             player.CmdSetHealth(player.DefaultCountHealth);
             player.GetComponentInChildren<ImmortalityView>().SetOutline(false);

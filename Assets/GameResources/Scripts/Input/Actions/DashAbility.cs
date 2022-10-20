@@ -93,10 +93,5 @@ namespace GameResources.Scripts.Input.Actions
             isDash = false;
             yield return null;
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawLine(CharacterController.transform.position, heroCamera.transform.TransformDirection(PlayerEntity.InputService.MoveDirection));
-        }
     }
 }

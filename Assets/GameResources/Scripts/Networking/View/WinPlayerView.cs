@@ -1,10 +1,12 @@
-﻿using Mirror;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace GameResources.Scripts.Networking.View
 {
-    public class WinPlayerView : NetworkBehaviour
+    /// <summary>
+    /// Визуалиция победителя
+    /// </summary>
+    public class WinPlayerView : MonoBehaviour
     {
         [SerializeField] 
         private TMP_Text WinnerName;
@@ -15,8 +17,7 @@ namespace GameResources.Scripts.Networking.View
         /// Назначить игрока победителем
         /// </summary>
         /// <param name="playerName"></param>
- 
-        [ClientRpc]
+       
         public void ShowWinner(string playerName)
         {
             ShowWinnerWindow(true);

@@ -33,7 +33,7 @@ namespace GameResources.Scripts.UI
         private void SetLockCursor(bool state)
         {
             Cursor.visible = state;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState =  state ? CursorLockMode.Locked : CursorLockMode.Confined;
         }
     }
 }
