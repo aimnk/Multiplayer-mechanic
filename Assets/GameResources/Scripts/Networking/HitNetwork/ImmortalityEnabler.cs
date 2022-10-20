@@ -18,21 +18,18 @@ public class ImmortalityEnabler : NetworkBehaviour
     private int delayImmortality = 3;
     
     private Coroutine coroutineImmortality;
-    
+
     /// <summary>
     /// Установить неуязвимость у игрока
     /// </summary>
     public void SetImmortality()
     {
         immortalityView.SetOutline(true);
-        
+
         if (playerEntity.isImortality && coroutineImmortality == null)
-        {
-            Debug.Log("Start coroutine");
             coroutineImmortality = StartCoroutine(DelayImmortality());
-        }
     }
-    
+
     private IEnumerator DelayImmortality()
     {
         yield return new WaitForSeconds(delayImmortality);

@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameResources.Scripts.Networking.Base;
-using GameResources.Scripts.Networking.View;
 using Mirror;
 using UnityEngine;
 
@@ -10,15 +10,19 @@ namespace GameResources.Scripts.Networking.Leaderbord
    /// <summary>
    /// Контроллер счета игроков
    /// </summary>
-   /// TODO: необходимо переписать класс, нарушение SOLID
    public class LeaderBoardController : NetworkBehaviour
    {
+      /// <summary>
+      /// Событие - изменение статистики
+      /// </summary>
+      public event Action<int, PlayerEntity> onChangeScore;
+      
       [SerializeField]
       private ViewPlayerStats prefabPlayerStats;
 
       [SerializeField] 
       private Transform content;
-
+      
       private RoomNetworkManager networkManager;
 
       private List<ViewPlayerStats> viewPlayerStatsList = new List<ViewPlayerStats>();
@@ -51,20 +55,26 @@ namespace GameResources.Scripts.Networking.Leaderbord
             }
          }
       }
-      
+
       [ServerCallback]
-      private void CmdAddHitToStats(PlayerEntity playerEntity) =>  UpdateStatData(playerEntity);
+      private void CmdAddHitToStats(PlayerEntity playerEntity)
+      {
+         UpdateStatData(playerEntity);
+         
+         var playerStatData = playerStatDatas.Find(data => data.NamePlayer == playerEntity.PlayerName);
+         onChangeScore.Invoke(playerStatData.CountHit + 1, playerEntity);
+      }
 
       [ClientRpc]
       private void UpdateStatData(PlayerEntity playerEntity)
       {
          var playerStatData = playerStatDatas.Find(data => data.NamePlayer == playerEntity.PlayerName);
 
-         if (playerStatData != null)
-         {
-            playerStatData.CountHit++;
-         }
+         if (playerStatData == null)
+            return;
 
+         playerStatData.CountHit++;
+         
          UpdateLeaderboard();
       }
 

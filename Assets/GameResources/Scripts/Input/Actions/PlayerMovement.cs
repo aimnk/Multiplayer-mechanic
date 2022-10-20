@@ -10,6 +10,8 @@ namespace GameResources.Scripts.Input.Actions
       [SerializeField]
       private float movementSpeed = 10f;
       
+      private Vector3 moveDirection;
+      
       protected override void Action()
       {
          if (PlayerEntity.InputService == null)
@@ -20,13 +22,15 @@ namespace GameResources.Scripts.Input.Actions
          
          if ((PlayerEntity.InputService.MoveDirection.sqrMagnitude < Mathf.Epsilon))
             return;
-
-         var movementVector = heroCamera.transform.TransformDirection(PlayerEntity.InputService.MoveDirection);
-         movementVector.y = 0;
-         movementVector.Normalize();
-         movementVector += Physics.gravity;
          
-         CharacterController.Move(movementVector * (movementSpeed * Time.deltaTime));
+         moveDirection = heroCamera.transform.forward * PlayerEntity.InputService.MoveDirection.y +
+                         heroCamera.transform.right * PlayerEntity.InputService.MoveDirection.x;
+         
+         moveDirection.y = 0;
+         
+         moveDirection.Normalize();
+         moveDirection += Physics.gravity;
+         CharacterController.Move(moveDirection * (movementSpeed * Time.deltaTime));
       }
 
       private void Update() => Action();

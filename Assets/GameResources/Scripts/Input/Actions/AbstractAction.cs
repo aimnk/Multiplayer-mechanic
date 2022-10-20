@@ -1,3 +1,4 @@
+using Cinemachine;
 using GameResources.Scripts.Networking;
 using GameResources.Scripts.Networking.Base;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace GameResources.Scripts.Input.Actions
         [SerializeField] 
         protected Camera heroCamera;
 
+        [SerializeField] 
+        protected GameObject cinemachineCamera;
+        
         protected PlayerEntity PlayerEntity;
 
         protected CharacterController CharacterController;
@@ -23,7 +27,10 @@ namespace GameResources.Scripts.Input.Actions
             CharacterController = GetComponent<CharacterController>();
 
             if (!PlayerEntity.isLocalPlayer)
+            {
                 heroCamera.enabled = false;
+                cinemachineCamera.SetActive(false);
+            }
         }
 
         private void Start()
@@ -31,6 +38,7 @@ namespace GameResources.Scripts.Input.Actions
             if (PlayerEntity.hasAuthority)
             {
                 heroCamera.enabled = true;
+                cinemachineCamera.SetActive(true);
             }
         }
 
